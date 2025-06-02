@@ -2,19 +2,24 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>財務提領蒙地卡羅模擬</title>
+    <title>財務提領計算器</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- 引入 Chart.js -->
+    <style>
+      /* 新增固定尺寸的容器 */
+      .chart-container {
+          width: 400px;       /* 調整寬度 */
+          height: 300px;      /* 調整高度 */
+          margin: auto;       /* 置中 */
+      }
+    </style>
 </head>
 <body>
     <h1>財務提領蒙地卡羅模擬</h1>
 
     <form id="simulationForm">
-        <label>初始資金:</label>
-        <input type="number" id="initial_capital" value="1000000"><br>
-
-        <label>初始提領金額:</label>
-        <input type="number" id="initial_spending" value="40000"><br>
+        <label>首年提領金額:</label>
+        <input type="number" id="annual_spending" value="600000"><br>
 
         <label>投資組合年化報酬率 (%):</label>
         <input type="number" id="expected_return" value="6" step="0.1"><br>
@@ -22,20 +27,22 @@
         <label>投資組合波動率 (%):</label>
         <input type="number" id="volatility" value="15" step="0.1"><br>
 
-        <label>通膨率(%):</label>
+        <label>通膨率 (%):</label>
         <input type="number" id="inflation_rate" value="2" step="0.1"><br>
-
-        <label>模擬年數:</label>
-        <input type="number" id="years" value="30"><br>
 
         <label>模擬次數:</label>
         <input type="number" id="num_simulations" value="10000"><br>
 
-        <button type="button" onclick="runSimulation()">開始模擬</button>
+        <button type="button" onclick="findRequiredCapital()">計算成功率 95% 所需初始資金</button>
     </form>
 
     <h2>結果: <span id="result"></span></h2>
 
-    <script src="script.js"></script>
+    <!-- 將 canvas 放在一個固定尺寸的容器內 -->
+    <div class="chart-container">
+        <canvas id="capitalChart"></canvas>
+    </div>
+
+    <script src="script.js"></script> <!-- 引入 JavaScript -->
 </body>
 </html>

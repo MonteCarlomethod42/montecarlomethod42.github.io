@@ -1,5 +1,8 @@
+// 用來暫存最新計算出的結果，方便匯出用
+let latestResults = {};
+
 function findRequiredCapital() {
-    console.log("開始執行計算..."); // 確保函數運行
+    console.log("開始執行計算...");
 
     let annualSpending = parseFloat(document.getElementById("annual_spending").value);
     let numSimulations = parseInt(document.getElementById("num_simulations").value);
@@ -17,7 +20,7 @@ function findRequiredCapital() {
         let requiredCapital = maxCapital;
         let withdrawalYears = 90 - retirementAge;
 
-        while (maxCapital - minCapital > 10000) { // 避免無限循環，讓計算更精確
+        while (maxCapital - minCapital > 10000) { // 當差異小於 1 萬元時停止迭代
             let testCapital = (minCapital + maxCapital) / 2;
             let successCount = 0;
 
@@ -49,6 +52,8 @@ function findRequiredCapital() {
         results[retirementAge] = requiredCapital;
     });
 
+    // 存入全域變數，方便後續匯出
+    latestResults = results;
     displayResults(results);
 }
 
@@ -63,7 +68,7 @@ function displayResults(results) {
     resultText += "</ul>";
     document.getElementById("result").innerHTML = resultText;
 
-    // 清除舊圖表
+    // 若之前已生成圖表，先銷毀以避免重疊
     if (window.capitalChartInstance) {
         window.capitalChartInstance.destroy();
     }
@@ -91,4 +96,27 @@ function displayResults(results) {
             }
         }
     });
+}
+
+// 匯出 CSV 檔案供 Excel 開啟
+function exportCSV() {
+    // 確保有計算結果
+    if (!latestResults || Object.keys(latestResults).length === 0) {
+        alert("請先執行計算！");
+        return;
+    }
+
+    let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // \uFEFF 為 Byte Order Mark (BOM)，可解決 Excel 顯示亂碼的問題
+    csvContent += "退休年齡,所需初始金額\n";
+    for (let age in latestResults) {
+        csvContent += `${age},${latestResults[age].toFixed(0)}\n`;
+    }
+
+    let encodedUri = encodeURI(csvContent);
+    let link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "財務計算結果.csv");
+    document.body.appendChild(link); // Firefox 需要將 link 加入 DOM
+    link.click();
+    document.body.removeChild(link);
 }

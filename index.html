@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <title>財務提領計算器</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- 引入 Chart.js -->
+    <!-- 引入 Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-      /* 新增固定尺寸的容器 */
-      .chart-container {
-          width: 400px;       /* 調整寬度 */
-          height: 300px;      /* 調整高度 */
-          margin: auto;       /* 置中 */
-      }
+        /* 固定圖表容器尺寸 */
+        .chart-container {
+            width: 400px;
+            height: 300px;
+            margin: auto;
+        }
     </style>
 </head>
 <body>
@@ -38,11 +39,14 @@
 
     <h2>結果: <span id="result"></span></h2>
 
-    <!-- 將 canvas 放在一個固定尺寸的容器內 -->
+    <!-- 結果折線圖 -->
     <div class="chart-container">
         <canvas id="capitalChart"></canvas>
     </div>
 
-    <script src="script.js"></script> <!-- 引入 JavaScript -->
+    <!-- 匯出 CSV 的按鈕 -->
+    <button type="button" onclick="exportCSV()">匯出結果至 Excel (CSV)</button>
+
+    <script src="script.js"></script>
 </body>
 </html>
